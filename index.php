@@ -2,8 +2,8 @@
   require "vendor/autoload.php";
   date_default_timezone_set("America/Louisville");
 
-  //$log = new Monolog\Logger('name');
-  //$log->pushHandler(new Monolog\Handler\StreamHandler('app.txt', Monolog\Logger::WARNING));
+  // $log = new Monolog\Logger('name');
+  // $log->pushHandler(new Monolog\Handler\StreamHandler('app.txt', Monolog\Logger::WARNING));
 
   // use Monolog\Logger;
   // use Monolog\Handler\StreamHandler;
@@ -22,15 +22,27 @@
   // });
 
 
-  //BACK TO SLIM 2.6.^
-  $app = new \Slim\Slim();
+
+  // BACK TO SLIM 2.6.^
+  $app = new \Slim\Slim(array(
+      'view' => new \Slim\Views\Twig(),
+  ));//Overrides view class and uses our own
+
+  $view = $app->view();
+  $view->parserOptions = array(
+    'debug' => true
+  );
+
+  $view->parserExtensions = array(
+    new \Slim\Views\TwigExtensions()
+  );
 
   $app->get('/', function() use($app) {
-    $app->render("index.html");
+    $app->render("about.twig");
   });
 
-  $app->get('/contact', function() {
-      echo "Feel free to contact us.";
+  $app->get('/contact', function() use($app) {
+    $app->render("contact.twig");
   });
 
   $app->run();
