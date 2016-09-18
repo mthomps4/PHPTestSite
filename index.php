@@ -11,20 +11,26 @@
   // $log->pushHandler(new StreamHandler('app.txt', Logger::WARNING));
   // $log->addWarning('Foo');
 
-  $app = new \Slim\App();
 
-  $app->get('/hello/{name}', function ($request, $response) {
-      $name = $request->getAttribute('name');
-      $response->getBody()->write("Hello, $name");
-      return $response;
+  // SLIM 3.^ stuff
+  // $app = new \Slim\App();
+  //
+  // $app->get('/hello/{name}', function ($request, $response) {
+  //     $name = $request->getAttribute('name');
+  //     $response->getBody()->write("Hello, $name");
+  //     return $response;
+  // });
+
+
+  //BACK TO SLIM 2.6.^
+  $app = new \Slim\Slim();
+
+  $app->get('/', function() use($app) {
+    $app->render("index.html");
   });
 
-  $app->get('/', function(){
-    echo "Hello, this is the Home Page.";
-  });
-
-  $app->get('/contact', function(){
-    echo "Contact us now!";
+  $app->get('/contact', function() {
+      echo "Feel free to contact us.";
   });
 
   $app->run();
